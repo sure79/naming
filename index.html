@@ -1,436 +1,368 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>이름 궁합 분석기</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f5f5f5;
-            line-height: 1.6;
-        }
-        
-        .container {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
-        }
-        
-        h1 {
-            color: #2c3e50;
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 2em;
-        }
-        
-        h2 {
-            color: #34495e;
-            margin-top: 30px;
-        }
-        
-        .input-group {
-            margin: 20px 0;
-        }
-        
-        input {
-            width: 100%;
-            padding: 12px;
-            font-size: 16px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            box-sizing: border-box;
-            transition: border-color 0.3s;
-        }
-        
-        input:focus {
-            border-color: #3498db;
-            outline: none;
-        }
-        
-        button {
-            width: 100%;
-            padding: 15px;
-            background-color: #3498db;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: 10px;
-            transition: background-color 0.3s;
-        }
-        
-        button:hover {
-            background-color: #2980b9;
-        }
-        
-        .result {
-            margin-top: 30px;
-            padding: 20px;
-            background: #f9f9f9;
-            border-radius: 10px;
-            display: none;
-        }
-        
-        .number {
-            font-weight: bold;
-            color: #3498db;
-        }
-        
-        .recommended-names {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            margin-top: 20px;
-        }
-        
-        .name-card {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-        }
-        
-        .name-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-        
-        .name-card .name {
-            font-size: 24px;
-            font-weight: bold;
-            color: #2c3e50;
-            margin-bottom: 10px;
-        }
-        
-        .name-card .compatibility-score {
-            font-size: 18px;
-            color: #3498db;
-            margin: 8px 0;
-        }
-        
-        .name-card .number-info {
-            color: #7f8c8d;
-            font-size: 14px;
-        }
-        
-        .error {
-            color: #e74c3c;
-            text-align: center;
-            margin-top: 10px;
-            padding: 10px;
-            background: #fde2e2;
-            border-radius: 5px;
-            display: none;
-        }
-
-        @media (max-width: 600px) {
-            .recommended-names {
-                grid-template-columns: 1fr;
-            }
-            
-            .container {
-                padding: 20px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>이름 궁합 분석기</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f5f5f5;
+      line-height: 1.6;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #2c3e50;
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 2em;
+    }
+    h2 {
+      color: #34495e;
+      margin-top: 30px;
+    }
+    .input-group {
+      margin: 20px 0;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      box-sizing: border-box;
+      transition: border-color 0.3s;
+    }
+    input:focus {
+      border-color: #3498db;
+      outline: none;
+    }
+    button {
+      width: 100%;
+      padding: 15px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 10px;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #2980b9;
+    }
+    .result {
+      margin-top: 30px;
+      padding: 20px;
+      background: #f9f9f9;
+      border-radius: 10px;
+      display: none;
+    }
+    .number {
+      font-weight: bold;
+      color: #3498db;
+    }
+    .recommended-names {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .name-card {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+    .name-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    .name-card .name {
+      font-size: 24px;
+      font-weight: bold;
+      color: #2c3e50;
+      margin-bottom: 10px;
+    }
+    .name-card .compatibility-score {
+      font-size: 18px;
+      color: #3498db;
+      margin: 8px 0;
+    }
+    .name-card .number-info {
+      color: #7f8c8d;
+      font-size: 14px;
+    }
+    .error {
+      color: #e74c3c;
+      text-align: center;
+      margin-top: 10px;
+      padding: 10px;
+      background: #fde2e2;
+      border-radius: 5px;
+      display: none;
+    }
+    @media (max-width: 600px) {
+      .recommended-names {
+        grid-template-columns: 1fr;
+      }
+      .container {
+        padding: 20px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>이름 궁합 분석기</h1>
-        
-        <div class="input-group">
-            <input type="text" id="nameInput" placeholder="이름을 입력하세요" maxlength="4">
-            <button onclick="analyzeName()">분석하기</button>
+<div class="container">
+  <h1>이름 궁합 분석기</h1>
+
+  <div class="input-group">
+    <input type="text" id="nameInput" placeholder="예) 김민서" maxlength="5"/>
+    <button onclick="analyzeName()">분석하기</button>
+  </div>
+
+  <div id="error" class="error"></div>
+
+  <div id="result" class="result">
+    <h2>분석 결과</h2>
+    <div id="analysis"></div>
+    <h2>궁합이 좋은 글자 TOP 30</h2>
+    <div id="recommendedNames" class="recommended-names"></div>
+  </div>
+</div>
+
+<script>
+  // ----------------------------
+  // [사주번호] nameToNumber
+  //  (성 + 자주 쓰는 이름 음절)
+  // ----------------------------
+  const nameToNumber = {
+    // 흔히 쓰이는 성(20개)
+    '김': 3, '이': 9, '박': 8, '최': 7, '정': 6, '강': 8, '조': 9, '윤': 10, '장': 9, '임': 3,
+    '한': 10, '오': 8, '서': 9, '신': 11, '권': 8, '황': 8, '안': 10, '송': 8, '전': 10, '홍': 9,
+
+    // 자주 쓰이는 이름 음절(예시)
+    '은': 2,
+    
+    // 3번 (여화제)
+    '민': 3, '임': 3, '노': 3, '모': 3, '삼': 3, '묵': 3, 
+    '문': 3, '미': 3, '누': 3, '흠': 3, '움': 3, '점': 3,
+    '무': 3, '겸': 3, '림': 3, '매': 3, '맹': 3, 
+    '나': 3, '남': 3, '마': 3, '명': 3, '목': 3,
+    '김': 3, '금': 3, '막': 3, '봄': 3, '내': 3,
+    
+    // 4번 (황제)
+    '석': 4, '로': 4, '학': 4, '슬': 4, 
+    '라': 4, '종': 4, '루': 4, '일': 4,
+    '식': 4, '래': 4, '례': 4, '록': 4,
+    '소': 4, '리': 4, '말': 4, '란': 4,
+    '숙': 4, '근': 4, '솔': 4, '순': 4,
+    
+    // 5번 (교황)
+    '태': 5, '택': 5, '규': 5, '분': 5, '돔': 5, '던': 5, '만': 5, '엽': 5, '평': 5, '효': 5,
+    '훈': 5, '도': 5, '봄': 5, '다': 5, '둔': 5, '령': 5, '봉': 5, '탁': 5, '탄': 5,
+    '대': 5, '덕': 5, '보': 5, '단': 5, '득': 5, '련': 5, '운': 5, '편': 5, '섭': 5,
+    '복': 5, '필': 5, '담': 5, '듬': 5, '렴': 5, '엄': 5, '표': 5, '포': 5,
+    '돈': 5, '두': 5, '갑': 5, '당': 5, '딘': 5, '후': 5, '욱': 5, '팽': 5,
+    
+    // 6번 (연인)
+    '정': 6,
+    
+    // 7번 (전차)
+    '최': 7, '동': 7, '차': 7, '추': 7, '건': 7,
+    '채': 7, '화': 7, '좌': 7, '찬': 7, '하': 7, '준': 7,
+    
+    // 8번 (힘)
+    '박': 8, '가': 8, '람': 8, '혜': 8, '늘': 8, '호': 8, '해': 8, '예': 8, '중': 8, 
+    '강': 8, '율': 8, '용': 8, '송': 8, '응': 8, '사': 8, '병': 8, '열': 8, '비': 8,
+    '양': 8, '백': 8, '승': 8, '옥': 8, '을': 8, '상': 8, '오': 8, '흥': 8, '거': 8,
+    '권': 8, '형': 8, '영': 8, '범': 8, '고': 8, '배': 8, '랑': 8, '빛': 8, '결': 8,'황': 8,
+
+    // 9번 (은둔자)
+    '순': 9, '정': 9, '이': 9, '서': 9, '선': 9, '여': 9, '녀': 9, '존': 9, '회': 9,
+    '지': 9, '향': 9, '장': 9, '제': 9, '주': 9, '철': 9, '님': 9, '심': 9,
+    '수': 9, '조': 9, '재': 9, '성': 9, '자': 9, '기': 9, '실': 9, '찰': 9, '어': 9,
+    '희': 9, '홍': 9, '유': 9, '우': 9, '언': 9, '귀': 9, '춘': 9, '설': 9,
+    '길': 9, '행': 9, '휴': 9, '헌': 9, '잠': 9, '허': 9, '갈': 9,
+    
+    // 10번 (운명의 수레바퀴)
+    '안': 10, '연': 10, '환': 10, '윤': 10, '인': 10, '란': 10,
+    '원': 10, '빈': 10, '론': 10, '완': 10, '전': 10, '온': 10,
+    '린': 10, '한': 10, '손': 10,
+    
+    // 11번 (정의)
+    '현': 11, '진': 11, '경': 11, '극': 11, '신': 11, '청': 11, '피': 11, '염': 11,
+    '키': 11, '창': 11, '간': 11, '닷': 11, '심': 11, '척': 11, '타': 11, '음': 11,
+    '천': 11, '세': 11, '감': 11, '본': 11, '션': 11, '첨': 11, '탐': 11, '품': 11,
+    '위': 11, '균': 11, '견': 11, '벼': 11, '숀': 11, '초': 11, '파': 11, '총': 11,
+    '의': 11, '검': 11, '곤': 11, '변': 11, '직': 11, '카': 11, '판': 11, '휘': 11
+  };
+
+  // ----------------------------
+  // 숫자 궁합 테이블
+  // ----------------------------
+  const numberCompatibility = {
+    2:  [4, 8, 11],
+    3:  [6, 9],
+    4:  [2, 7, 10],
+    5:  [3, 8, 11],
+    6:  [3, 9],
+    7:  [4, 10],
+    8:  [2, 5, 11],
+    9:  [3, 6],
+    10: [4, 7],
+    11: [2, 5, 8]
+  };
+
+  // ----------------------------
+  // 숫자별 타로 의미 (간단)
+  // ----------------------------
+  const tarotMeanings = {
+    2:  "여사제 - 차분하고 직관적인 성향",
+    3:  "여황제 - 풍요롭고 창조적인 성향",
+    4:  "황제 - 리더십과 권위가 있는 성향",
+    5:  "교황 - 전통과 가르침을 중시하는 성향",
+    6:  "연인 - 조화롭고 사랑을 추구하는 성향",
+    7:  "전차 - 도전적이고 진취적인 성향",
+    8:  "힘 - 강인한 인내심과 용기를 갖춘 성향",
+    9:  "은둔자 - 지혜롭고 깊은 내면 성찰을 지닌 성향",
+    10: "운명의 수레바퀴 - 변화에 유연하고 운을 잘 타는 성향",
+    11: "정의 - 공정하고 논리적인 성향"
+  };
+
+  // ----------------------------
+  // 메인 분석 함수
+  // ----------------------------
+  function analyzeName() {
+    const input = document.getElementById('nameInput').value.trim();
+    const errorDiv = document.getElementById('error');
+    const resultDiv = document.getElementById('result');
+    const analysisDiv = document.getElementById('analysis');
+    const recommendedNamesDiv = document.getElementById('recommendedNames');
+
+    // 에러 초기화
+    errorDiv.style.display = 'none';
+    errorDiv.textContent = '';
+
+    if (input.length === 0) {
+      showError('이름을 입력해주세요.');
+      return;
+    }
+    if (input.length < 2) {
+      showError('성 + 이름 형태로 최소 2글자 이상 입력해주세요. (예: 김민)');
+      return;
+    }
+
+    // 입력 -> 숫자 변환
+    const originalNumbers = [];
+    for (let char of input) {
+      if (!nameToNumber[char]) {
+        showError(`분석 불가한 글자(${char})입니다.`);
+        return;
+      }
+      originalNumbers.push(nameToNumber[char]);
+    }
+
+    // 분석 결과 보이기
+    resultDiv.style.display = 'block';
+
+    // 타로 정보 표시
+    const uniqueNums = [...new Set(originalNumbers)];
+    const tarotText = uniqueNums.map(n => {
+      const meaning = tarotMeanings[n] ? tarotMeanings[n] : '(정보 없음)';
+      return `
+        <div>
+          <strong>숫자: ${n}</strong><br>
+          <em>${meaning}</em>
         </div>
+      `;
+    }).join("<hr>");
 
-        <div id="error" class="error"></div>
+    analysisDiv.innerHTML = `
+      <p><strong>[${input}]</strong> 이름의 숫자들: <strong>${originalNumbers.join(', ')}</strong></p>
+      ${tarotText}
+    `;
 
-        <div id="result" class="result">
-            <h2>분석 결과</h2>
-            <div id="analysis"></div>
-            <h2>궁합이 좋은 이름 추천</h2>
-            <div id="recommendedNames" class="recommended-names"></div>
+    // 궁합 계산
+    const recommendedList = recommendSingleChars(originalNumbers, 30);
+
+    if (recommendedList.length === 0) {
+      recommendedNamesDiv.innerHTML = "<p>추천할 만한 글자가 없습니다.</p>";
+    } else {
+      recommendedNamesDiv.innerHTML = recommendedList.map(item => `
+        <div class="name-card">
+          <div class="name">${item.char}</div>
+          <div class="compatibility-score">점수: ${item.score}점</div>
+          <div class="number-info">글자 숫자: ${item.charNum}</div>
         </div>
-    </div>
+      `).join('');
+    }
 
-    <script>
-        // -------------------------
-        // 사전에 정의된 객체들
-        // -------------------------
-        const nameToNumber = {
-            // 2번 (여사제)
-            '은': 2,
-            
-            // 3번 (여황제)
-            '민': 3, '임': 3, '노': 3, '모': 3, '삼': 3, '묵': 3, 
-            '문': 3, '미': 3, '누': 3, '흠': 3, '움': 3, '점': 3,
-            '무': 3, '겸': 3, '림': 3, '매': 3, '맹': 3, 
-            '나': 3, '남': 3, '마': 3, '명': 3, '목': 3,
-            '김': 3, '금': 3, '막': 3, '봄': 3, '내': 3,
-            
-            // 4번 (황제)
-            '석': 4, '로': 4, '학': 4, '슬': 4, 
-            '라': 4, '종': 4, '루': 4, '일': 4,
-            '식': 4, '래': 4, '례': 4, '록': 4,
-            '소': 4, '리': 4, '말': 4, '란': 4,
-            '숙': 4, '근': 4, '솔': 4, '순': 4,
-            
-            // 5번 (교황)
-            '태': 5, '택': 5, '규': 5, '분': 5, '돔': 5, '던': 5, '만': 5, '엽': 5, '평': 5, '효': 5,
-            '훈': 5, '도': 5, '봄': 5, '다': 5, '둔': 5, '령': 5, '봉': 5, '탁': 5, '탄': 5,
-            '대': 5, '덕': 5, '보': 5, '단': 5, '득': 5, '련': 5, '운': 5, '편': 5, '섭': 5,
-            '복': 5, '필': 5, '담': 5, '듬': 5, '렴': 5, '엄': 5, '표': 5, '포': 5,
-            '돈': 5, '두': 5, '갑': 5, '당': 5, '딘': 5, '후': 5, '욱': 5, '팽': 5,
-            
-            // 6번 (연인)
-            '정': 6,
-            
-            // 7번 (전차)
-            '최': 7, '동': 7, '차': 7, '추': 7, '건': 7,
-            '채': 7, '화': 7, '좌': 7, '찬': 7, '하': 7, '준': 7,
-            
-            // 8번 (힘)
-            '박': 8, '가': 8, '람': 8, '혜': 8, '늘': 8, '호': 8, '해': 8, '예': 8, '중': 8, 
-            '강': 8, '율': 8, '용': 8, '송': 8, '응': 8, '사': 8, '병': 8, '열': 8, '비': 8,
-            '양': 8, '백': 8, '승': 8, '옥': 8, '을': 8, '상': 8, '오': 8, '흥': 8, '거': 8,
-            '권': 8, '형': 8, '영': 8, '범': 8, '고': 8, '배': 8, '랑': 8, '빛': 8, '결': 8,
+    // 에러 표시 함수
+    function showError(msg) {
+      errorDiv.style.display = 'block';
+      errorDiv.textContent = msg;
+      resultDiv.style.display = 'none';
+    }
+  }
 
-            // 9번 (은둔자)
-            '순': 9, '정': 9, '이': 9, '서': 9, '선': 9, '여': 9, '녀': 9, '존': 9, '회': 9,
-            '지': 9, '향': 9, '장': 9, '제': 9, '주': 9, '철': 9, '님': 9, '심': 9,
-            '수': 9, '조': 9, '재': 9, '성': 9, '자': 9, '기': 9, '실': 9, '찰': 9, '어': 9,
-            '희': 9, '홍': 9, '유': 9, '우': 9, '언': 9, '귀': 9, '춘': 9, '설': 9,
-            '길': 9, '행': 9, '휴': 9, '헌': 9, '잠': 9, '허': 9, '갈': 9,
-            
-            // 10번 (운명의 수레바퀴)
-            '안': 10, '연': 10, '환': 10, '윤': 10, '인': 10, '란': 10,
-            '원': 10, '빈': 10, '론': 10, '완': 10, '전': 10, '온': 10,
-            '린': 10, '한': 10, '손': 10,
-            
-            // 11번 (정의)
-            '현': 11, '진': 11, '경': 11, '극': 11, '신': 11, '청': 11, '피': 11, '염': 11,
-            '키': 11, '창': 11, '간': 11, '닷': 11, '심': 11, '척': 11, '타': 11, '음': 11,
-            '천': 11, '세': 11, '감': 11, '본': 11, '션': 11, '첨': 11, '탐': 11, '품': 11,
-            '위': 11, '균': 11, '견': 11, '벼': 11, '숀': 11, '초': 11, '파': 11, '총': 11,
-            '의': 11, '검': 11, '곤': 11, '변': 11, '직': 11, '카': 11, '판': 11, '휘': 11
-        };
+  // ----------------------------
+  // "한 글자" 추천 함수
+  //  - 입력 이름의 숫자 vs 단일 글자의 숫자
+  //  - 궁합 점수를 계산하여, 높은 순으로 최대 count개
+  // ----------------------------
+  function recommendSingleChars(originalNumbers, count = 20) {
+    // (1) 중복된 문자(성,음절) 포함될 수 있으므로 전체 key 중, 성+이름 음절에 해당하는 것만 모음
+    // 하지만 여기선 모든 key가 대상 가능
+    const allChars = Object.keys(nameToNumber);
 
-        const numberCompatibility = {
-            2: [4, 8, 11],
-            3: [6, 9],
-            4: [2, 7, 10],
-            5: [3, 8, 11],
-            6: [3, 9],
-            7: [4, 10],
-            8: [2, 5, 11],
-            9: [3, 6],
-            10: [4, 7],
-            11: [2, 5, 8]
-        };
+    // (2) 각 글자별로 궁합 점수 계산
+    const scored = allChars.map(char => {
+      const charNum = nameToNumber[char];
+      const score = calculateCompatibilityScore(originalNumbers, charNum);
+      return { char, charNum, score };
+    });
 
-        const tarotMeanings = {
-            2: "여사제(The High Priestess) - 직관력과 지혜가 뛰어나며, 내면의 목소리에 귀 기울이는 성향. 차분하고 신중한 성격으로 깊이 있는 통찰력을 지님. 학문과 예술 분야에서 재능을 발휘할 수 있으며, 비밀을 잘 지키는 신뢰할 수 있는 조언자 역할을 함. 때로는 내성적이고 신비로운 매력을 지님.",
-            3: "여황제(The Empress) - 풍요와 창조성이 넘치며, 따뜻한 모성애와 포용력이 강한 성향. 예술적 감각이 뛰어나고 주변을 아름답게 가꾸는 재능이 있음. 베푸는 것을 좋아하며 인복이 많고, 물질적 풍요도 함께 따르는 경향이 있음. 감성이 풍부하고 자연과의 조화를 중시함.",
-            4: "황제(The Emperor) - 강력한 리더십과 권위를 지니며, 체계적이고 논리적인 사고방식을 가짐. 목표 지향적이며 성취욕이 강하고, 책임감이 뛰어나 주변인들의 신뢰를 받음. 현실적이고 실용적인 판단력을 지니며, 안정된 기반을 구축하는 능력이 탁월함.",
-            5: "교황(The Hierophant) - 전통과 가르침을 중시하며, 높은 도덕성과 윤리의식을 지닌 성향. 지식을 전달하고 조언하는 것에 탁월하며, 체계와 질서를 중요시함. 영적인 지혜와 현실적인 조언을 조화롭게 전달할 수 있는 능력이 있으나, 때로는 고지식할 수 있음.",
-            6: "연인(The Lovers) - 조화와 사랑을 추구하며, 인간관계에서 뛰어난 균형감각을 보임. 심미적 감각이 발달했으며, 선택의 순간에 직관적 판단력을 발휘함. 낭만적이고 이상적인 관계를 추구하며, 타인과의 교감능력이 뛰어남. 예술과 아름다움을 사랑하는 성향.",
-            7: "전차(The Chariot) - 강한 의지력과 추진력을 가지고 있으며, 도전을 두려워하지 않는 진취적 성향. 목표를 향해 끊임없이 전진하는 warrior 기질이 있음. 승부욕이 강하고 성취 지향적이며, 다양한 상황을 통제하고 조율하는 능력이 탁월함.",
-            8: "힘(Strength) - 내면의 강인함과 인내심이 뛰어나며, 어려움을 극복하는 정신력이 탁월함. 부드러운 카리스마로 주변을 이끄는 능력이 있으며, 자기 통제력이 뛰어남. 용기와 관용을 겸비하고 있어 진정한 리더십을 발휘할 수 있음.",
-            9: "은둔자(The Hermit) - 깊은 통찰력과 지혜를 지니며, 진리를 탐구하는 철학적 성향. 독립적이고 자족적인 성격으로, 고독을 두려워하지 않음. 내면의 성찰을 통해 깊이 있는 지혜를 얻으며, 이를 타인과 나누는 것을 중요시함. 영적인 깨달음을 추구하는 성향.",
-            10: "운명의 수레바퀴(Wheel of Fortune) - 변화와 기회를 맞이하는 능력이 뛰어나며, 운명의 흐름을 잘 타는 성향. 적응력이 뛰어나고 다재다능하며, 새로운 상황에 빠르게 대처할 수 있음. 행운이 따르는 경향이 있으며, 인생의 순환을 이해하고 받아들이는 지혜가 있음.",
-            11: "정의(Justice) - 공정성과 균형감각이 뛰어나며, 논리적이고 분석적인 사고능력을 지님. 정의감이 강하고 도덕적 판단력이 우수하며, 중립적인 시각으로 상황을 볼 수 있음. 합리적인 의사결정 능력과 함께 책임감이 강한 성향을 보임."
-        };
+    // (3) 점수가 70점 이상인 글자만 추출
+    const filtered = scored.filter(item => item.score >= 70);
 
-        // -------------------------
-        // 궁합이 좋은 '이름' 음절 목록 확장
-        // -------------------------
-        const softNameCharacters = {
-            // 각 숫자에 해당하는 이름 음절을 자주 쓰이는 것 위주로 조금 더 많이 추가
-            2:  ['은', '인', '희', '이', '의', '온', '우', '유', '예', '아', '흰', '의'],
-            3:  ['민', '미', '하', '림', '나', '연', '아', '다', '라', '선', '마', '내', '마', '나', '인', '혜'],
-            4:  ['준', '현', '우', '민', '서', '진', '건', '석', '찬', '윤', '호', '솔', '하', '재', '혁', '승'],
-            5:  ['효', '윤', '민', '서', '현', '준', '원', '우', '진', '수', '후', '봉', '태', '재', '보', '담'],
-            6:  ['아', '윤', '서', '지', '은', '연', '민', '인', '혜', '린', '라', '미', '나', '유', '애', '예'],
-            7:  ['준', '윤', '서', '진', '민', '우', '현', '수', '인', '건', '하', '찬', '채', '도', '현', '혁'],
-            8:  ['현', '우', '준', '윤', '민', '서', '진', '건', '찬', '수', '람', '영', '열', '경', '백', '용'],
-            9:  ['은', '우', '민', '서', '윤', '진', '현', '수', '인', '준', '이', '희', '향', '지', '홍', '성'],
-            10: ['연', '우', '현', '진', '민', '서', '준', '윤', '인', '수', '온', '환', '빈', '론', '완', '린'],
-            11: ['현', '진', '민', '서', '준', '우', '윤', '수', '인', '은', '경', '신', '청', '휘', '감', '위']
-        };
+    // (4) 높은 점수 -> 낮은 점수 순으로 정렬
+    filtered.sort((a, b) => b.score - a.score);
 
-        // -------------------------
-        // 추천 이름 생성 로직
-        // -------------------------
-        function generateFullName(compatibleNumbers) {
-            // 빈도 높은 대표 성씨
-            const familyNames = [
-                '김', '이', '박', '최', '정', '강', '조', '윤', '장', '임', 
-                '한', '오', '서', '신', '권', '황', '안', '송', '전', '홍'
-            ];
+    // (5) 최대 count개만 반환
+    return filtered.slice(0, count);
+  }
 
-            // 궁합 점수 계산 함수
-            function calculateCompatibilityScore(nameNumbers, originalNumbers) {
-                let score = 70; // 기본 점수를 70점으로 시작
-                nameNumbers.forEach(num => {
-                    originalNumbers.forEach(origNum => {
-                        // 본래 이름의 각 숫자(origNum)와 궁합이 좋은 숫자들 중에 포함되어 있으면 점수 가산
-                        if (numberCompatibility[origNum]?.includes(num)) {
-                            score += 15; // 궁합이 맞으면 15점 추가
-                            // 첫 번째 인덱스와 같으면(가장 좋은 궁합) 10점 추가
-                            if (num === numberCompatibility[origNum][0]) {
-                                score += 10; 
-                            }
-                        }
-                    });
-                });
-                return Math.min(100, score); // 최대 100점
-            }
-
-            // 주어진 compatibleNumbers 중에서 랜덤하게 2글자 이름을 생성
-            function createName() {
-                // 성
-                const familyName = familyNames[Math.floor(Math.random() * familyNames.length)];
-                
-                // 2글자 이름으로 고정
-                let fullName = familyName;
-                let nameNumbers = [];
-
-                // 첫 글자 숫자 뽑기
-                const firstCharNum = Array.from(compatibleNumbers)[Math.floor(Math.random() * compatibleNumbers.size)];
-                const firstCharList = softNameCharacters[firstCharNum];
-                const firstChar = firstCharList[Math.floor(Math.random() * firstCharList.length)];
-                fullName += firstChar;
-                nameNumbers.push(firstCharNum);
-
-                // 두 번째 글자(다른 궁합 숫자거나 같을 수도 있음)
-                // 더 많은 다양성을 위해, firstCharNum과 같은 숫자도 다시 쓰되, 50% 확률 정도로
-                let secondCharNum;
-                if (Math.random() < 0.5) {
-                    secondCharNum = Array.from(compatibleNumbers).find(n => n !== firstCharNum) || firstCharNum;
-                } else {
-                    secondCharNum = firstCharNum;
-                }
-                const secondCharList = softNameCharacters[secondCharNum];
-                const secondChar = secondCharList[Math.floor(Math.random() * secondCharList.length)];
-                fullName += secondChar;
-                nameNumbers.push(secondCharNum);
-
-                return {
-                    fullName,
-                    nameNumbers,
-                    score: calculateCompatibilityScore(nameNumbers, Array.from(compatibleNumbers))
-                };
-            }
-
-            // 추천 이름 모으기
-            const names = new Map();
-            let attempts = 0;
-
-            // 시도 횟수를 늘려 다양한 이름을 확보
-            while (names.size < 15 && attempts < 300) {
-                const newName = createName();
-                // 중복 제거 & 일정 점수 이상만 추출
-                if (!names.has(newName.fullName) && newName.score >= 70) {
-                    names.set(newName.fullName, newName);
-                }
-                attempts++;
-            }
-            
-            // 점수가 높은 순으로 정렬 후 반환
-            return Array.from(names.values())
-                .sort((a, b) => b.score - a.score);
+  // ----------------------------
+  // 궁합 점수 계산 (단일 글자 버전)
+  // ----------------------------
+  function calculateCompatibilityScore(originalNums, candidateNum) {
+    let score = 70; // 기본 70점
+    // originalNums의 각 숫자와 candidateNum을 비교
+    for (let on of originalNums) {
+      const compArray = numberCompatibility[on];
+      if (compArray && compArray.includes(candidateNum)) {
+        // 궁합에 포함되면 +15
+        score += 15;
+        // compArray 중 첫 번째 요소(가장 궁합이 좋은 요소)라면 +10
+        if (candidateNum === compArray[0]) {
+          score += 10;
         }
-
-        // -------------------------
-        // 이름을 분석하는 메인 함수
-        // -------------------------
-        function analyzeName() {
-            const input = document.getElementById('nameInput').value.trim();
-            const errorDiv = document.getElementById('error');
-            const resultDiv = document.getElementById('result');
-            const analysisDiv = document.getElementById('analysis');
-            const recommendedNamesDiv = document.getElementById('recommendedNames');
-
-            // 에러 메세지 초기화
-            errorDiv.style.display = 'none';
-            errorDiv.textContent = '';
-
-            // 입력값 유효성 검사
-            if (input.length === 0) {
-                errorDiv.style.display = 'block';
-                errorDiv.textContent = '이름을 입력해주세요.';
-                resultDiv.style.display = 'none';
-                return;
-            }
-
-            // 이름 -> 숫자로 변환
-            let numbers = [];
-            for (let char of input) {
-                if (!nameToNumber[char]) {
-                    errorDiv.style.display = 'block';
-                    errorDiv.textContent = `지원되지 않는 글자(${char})가 포함되어 있습니다.`;
-                    resultDiv.style.display = 'none';
-                    return;
-                }
-                numbers.push(nameToNumber[char]);
-            }
-
-            // 분석 내용 표시
-            resultDiv.style.display = 'block';
-            const uniqueNumbers = [...new Set(numbers)]; // 중복 제거
-            const tarotDescriptions = uniqueNumbers.map(num => {
-                return `<div>
-                            <strong>이름 글자 숫자: ${num}</strong><br>
-                            <em>${tarotMeanings[num]}</em>
-                        </div>`;
-            }).join("<hr>");
-
-            analysisDiv.innerHTML = `
-                <p><strong>[ ${input} ]</strong>의 숫자: <strong>${numbers.join(', ')}</strong></p>
-                ${tarotDescriptions}
-            `;
-
-            // 궁합이 좋은 숫자들(모든 글자에 대해)을 모으기
-            let compatibleSet = new Set();
-            numbers.forEach(num => {
-                if (numberCompatibility[num]) {
-                    numberCompatibility[num].forEach(cnum => compatibleSet.add(cnum));
-                }
-            });
-
-            // 궁합이 좋은 숫자가 아예 없으면 처리
-            if (compatibleSet.size === 0) {
-                recommendedNamesDiv.innerHTML = "<p>추천할 수 있는 궁합 숫자가 없습니다.</p>";
-                return;
-            }
-
-            // 이름 생성
-            const recommendedNames = generateFullName(compatibleSet);
-
-            // 화면 표시
-            if (recommendedNames.length === 0) {
-                recommendedNamesDiv.innerHTML = "<p>추천할 만한 이름이 없습니다.</p>";
-            } else {
-                recommendedNamesDiv.innerHTML = recommendedNames.map(item => {
-                    const numbersStr = item.nameNumbers.join(", ");
-                    return `
-                        <div class="name-card">
-                            <div class="name">${item.fullName}</div>
-                            <div class="compatibility-score">궁합 점수: ${item.score}점</div>
-                            <div class="number-info">이름 숫자: ${numbersStr}</div>
-                        </div>
-                    `;
-                }).join("");
-            }
-        }
-    </script>
+      }
+    }
+    return Math.min(score, 100);
+  }
+</script>
 </body>
 </html>
